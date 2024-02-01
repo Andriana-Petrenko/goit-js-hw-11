@@ -1,14 +1,18 @@
+// ----library iziToast----
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
+import closeIcon from './img/bi_x-octagon.png';
 
+// ----library simpleLigthbox----
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-import closeIcon from './img/bi_x-octagon.png';
 
 const form = document.querySelector('form');
 const list = document.querySelector('.gallery');
 form.addEventListener('submit', onSearchButton);
 
+
+// ----Event Searching photos----
 function onSearchButton(e){
     e.preventDefault();
     const inputSearch = form.elements.search.value;
@@ -20,14 +24,15 @@ function onSearchButton(e){
         position: 'topRight',
         message: 'Please,enter what do you want to find!',
         });
-        document.remove(list);
         return;
     }
-    // form.insertAdjacentHTML('afterend','<div class="loader"></div>')
+    form.insertAdjacentHTML('afterend', '<span class="loader"></span>');
     getPhotos(inputSearch);
     form.reset();
 }
 
+
+// ----Promise function----
 function getPhotos(inputSearch) {
     const searchParams = new URLSearchParams({
     key: "42112521-3ff4dfc201bab0977369cd2bc",
@@ -42,12 +47,17 @@ const url = `https://pixabay.com/api/?${searchParams}`;
 .then(response => {return response.json()})
 .then(photos => {
     const arrayPhotos = photos.hits;
-         if (arrayPhotos.length === 0){noPhotos()};
-    renderPhoto(arrayPhotos);})
+    if (arrayPhotos.length === 0) {noImages() };
+    const spanLoader = document.querySelector('.loader');
+    renderPhoto(arrayPhotos);
+    spanLoader.remove();
+})
 .catch(error => console.log(error));
 }
 
-function noPhotos() {
+
+// ----When photos are not found----
+function noImages() {
     iziToast.error({
         messageColor: '#FFF',
         color: '#EF4040',
@@ -57,6 +67,8 @@ function noPhotos() {
         });
 }
 
+
+// ----Markup HTML----
 function renderPhoto(photos) {
     const markup = photos
         .map(({ webformatURL, tags, likes, views, comments, downloads }) =>
@@ -78,6 +90,7 @@ function renderPhoto(photos) {
 }
 
 
+// ----library simpleLigthbox----
 function simpleLigthbox(){
     let gallery = new SimpleLightbox('.gallery a',{
     captionsData: 'alt',
