@@ -71,7 +71,6 @@
   color:#2E2F42;
 }
 
-
 .form-button{
   font-family: inherit;
   width: 91px;
@@ -124,9 +123,6 @@
   align-items: center;
 }
 
-.gallery-link{
-}
-
 span{
   font-weight: bold;
 }
@@ -137,37 +133,36 @@ text-align: center;
 
 
  .loader {
-   width: 48px;
-   height: 48px;
-   border: 3px solid #FFF;
-   border-radius: 50%;
-   display: block;
-   position: relative;
-   box-sizing: border-box;
-   animation: rotation 1s linear infinite;
-  
+  width: 48px;
+  height: 48px;
+  border: 3px solid #FFF;
+  border-radius: 50%;
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+
  }
 
  .loader::after {
-   content: '';
-   box-sizing: border-box;
-   position: absolute;
-   left: 50%;
-   top: 50%;
-   transform: translate(-50%, -50%);
-   width: 56px;
-   height: 56px;
-   border-radius: 50%;
-   border: 3px solid;
-   border-color: #4E75FF transparent;
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 50%;   transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid;
+  border-color: #4E75FF transparent;
  }
 
  @keyframes rotation {
-   0% {
+  0% {
      transform: rotate(0deg);
    }
 
-   100% {
+  100% {
      transform: rotate(360deg);
    }}
 
