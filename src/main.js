@@ -11,7 +11,6 @@ const form = document.querySelector('form');
 const list = document.querySelector('.gallery');
 form.addEventListener('submit', onSearchButton);
 
-
 // ----Event Searching photos----
 function onSearchButton(e){
     e.preventDefault();
@@ -31,7 +30,6 @@ function onSearchButton(e){
     form.reset();
 }
 
-
 // ----Promise function----
 function getPhotos(inputSearch) {
     const searchParams = new URLSearchParams({
@@ -39,25 +37,33 @@ function getPhotos(inputSearch) {
     q: `${inputSearch}`,
     image_type: "photo",
     orientation: "horizontal",
-    safesearch:"true",
+    safesearch: "true",
     });
      
 const url = `https://pixabay.com/api/?${searchParams}`;
- return fetch(url)
-.then(response => {return response.json()})
-.then(photos => {
-    const arrayPhotos = photos.hits;
-    if (arrayPhotos.length === 0) {noImages() };
-    const spanLoader = document.querySelector('.loader');
-    renderPhoto(arrayPhotos);
-    spanLoader.remove();
-})
-.catch(error => console.log(error));
+    return fetch(url)
+        .then(response => { return response.json() })
+        .then(photos => {
+            const arrayPhotos = photos.hits;
+            if (arrayPhotos.length === 0) { noImages() };
+            const spanLoader = document.querySelector('.loader');
+            renderPhoto(arrayPhotos);
+            spanLoader.remove();
+        })
+        .catch(error => {
+            iziToast.error({
+                messageColor: '#FFF',
+                color: '#EF4040',
+                iconUrl: closeIcon,
+                position: 'topRight',
+                message: `${error}`,
+            })
+        });
 }
-
 
 // ----When photos are not found----
 function noImages() {
+    list.innerHTML='';
     iziToast.error({
         messageColor: '#FFF',
         color: '#EF4040',
@@ -67,13 +73,12 @@ function noImages() {
         });
 }
 
-
 // ----Markup HTML----
 function renderPhoto(photos) {
     const markup = photos
-        .map(({ webformatURL, tags, likes, views, comments, downloads }) =>
+        .map(({ largeImageURL, webformatURL, tags, likes, views, comments, downloads }) =>
  `<li class='gallery-item'>
-  <a class='gallery-link' href='${webformatURL}'>
+  <a class='gallery-link' href='${largeImageURL}'>
     <img class='gallery-image' src='${webformatURL}' alt='${tags}'/>
   </a>
 <div class='container-app'>
@@ -84,19 +89,17 @@ function renderPhoto(photos) {
 </div>
  </li>`)
         .join('');
-    list.innerHTML = markup;
-    simpleLigthbox();
-
+    list.insertAdjacentHTML('afterBegin', markup);
+    simpleLightbox();
 }
 
-
-// ----library simpleLigthbox----
-function simpleLigthbox(){
+// ----library simpleLightbox----
+function simpleLightbox(){
     let gallery = new SimpleLightbox('.gallery a',{
     captionsData: 'alt',
     captionsPosition: 'bottom',
     captionDelay: 250,
 });
-    gallery.on('show.simplelightbox');
+    gallery.on('show.simpleLightbox');
     gallery.refresh();
 }
