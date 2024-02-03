@@ -26,6 +26,7 @@ function onSearchButton(e){
         return;
     }
     form.insertAdjacentHTML('afterend', '<span class="loader"></span>');
+    list.innerHTML = '';
     getPhotos(inputSearch);
     form.reset();
 }
@@ -48,6 +49,7 @@ const url = `https://pixabay.com/api/?${searchParams}`;
             if (arrayPhotos.length === 0) { noImages() };
             const spanLoader = document.querySelector('.loader');
             renderPhoto(arrayPhotos);
+            simpleLightbox();
             spanLoader.remove();
         })
         .catch(error => {
@@ -63,7 +65,6 @@ const url = `https://pixabay.com/api/?${searchParams}`;
 
 // ----When photos are not found----
 function noImages() {
-    list.innerHTML='';
     iziToast.error({
         messageColor: '#FFF',
         color: '#EF4040',
@@ -89,8 +90,7 @@ function renderPhoto(photos) {
 </div>
  </li>`)
         .join('');
-    list.insertAdjacentHTML('afterBegin', markup);
-    simpleLightbox();
+    list.innerHTML = markup;
 }
 
 // ----library simpleLightbox----
